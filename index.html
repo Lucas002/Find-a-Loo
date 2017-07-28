@@ -47,11 +47,16 @@
 
 <script>
 	function myMap() {
-	var mapProp= {
-		center:new google.maps.LatLng(-37.8136, 144.9631),
-		zoom:15,
-	};
-	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		var melbourne = {lat: -37.8136, lng: 144.9631};
+		var map = new google.maps.Map(document.getElementById("googleMap"), {
+			zoom:15,
+			center: melbourne
+		});
+		var latrobestT = {lat: -37.808934, lng: 144.965654};
+		var marker1 = new google.maps.Marker({
+			position: latrobestT,
+			map: map
+		});
 	}
 </script>
 
