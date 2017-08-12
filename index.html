@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Geolocation</title>
+    <title>Find-a-Loo</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 	
@@ -115,7 +115,6 @@
 			text-decoration:none; 
 			color:#666;
 		}
-
 		.glyphicon-home{
 			color:white; 
 			font-size:1.5em; 
@@ -126,7 +125,6 @@
 			display:inline-block; font-size:12px;
 			height: 9vh;
 		}
-
 		.headerLogo img{
 			display: block;
 			position: absolute;
@@ -202,7 +200,6 @@
 		<div id="map-canvas"></div>
 
 		<script type="text/javascript"> 
-
 			var options = {enableHighAccuracy: true};
 			
 			var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
@@ -210,9 +207,9 @@
 			navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
 			function onSuccess(position) {
 				var lat = position.coords.latitude;
-				var lang = position.coords.longitude;
+				var lng = position.coords.longitude;
 				//Google Maps
-				var myLatlng = new google.maps.LatLng(lat,lang);
+				var myLatlng = new google.maps.LatLng(lat,lng);
 				var mapOptions = {zoom: 15,center: myLatlng}
 				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 				var marker = new google.maps.Marker({
@@ -243,11 +240,11 @@
 			
 			
 			function showPosition(position){
-				var lat = position.coords.latitude;
-				var lang = position.coords.longitude;
-				var myLatlng = new google.maps.LatLng(lat,lang);
+				var updatedLat = position.coords.latitude;
+				var updatedLng = position.coords.longitude;
+				var myUpdatedlatlng = new google.maps.LatLng(updatedLat, UpdatedLng);
 				var marker = new google.maps.Marker({
-					position: myLatlng,
+					position: myUpdatedlatlng,
 					icon: 'https://image.ibb.co/j8F82F/user_icon.png',
 					map: map
 				});
