@@ -158,7 +158,7 @@
 	<body>
 	
 		<div class="headerLogo">
- 			<img src="img/FaL_logo.png" alt="FaL logo" />
+ 			<img src="img/FaL_logo.png" alt="FaL logo"  onclick="showLocation()"/>
  		</div>
 
 		<header>
@@ -204,7 +204,12 @@
 			
 			var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 			
-			navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+			navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+
+			function showLocation(){
+				navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+			}
+
 			function onSuccess(position) {
 				var lat = position.coords.latitude;
 				var lng = position.coords.longitude;
@@ -236,8 +241,6 @@
 					}
 				}
 			}
-			
-			
 			
 			function showPosition(position){
 				var updatedLat = position.coords.latitude;
