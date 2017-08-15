@@ -350,9 +350,12 @@
 			var options = {enableHighAccuracy: true};
 			var markers = [];
 			
-			var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
+			window.setInterval(function(){
+				var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
+			}, 2000);
 			
 			navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+			
 			function showLocation(){
 				navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 			}
