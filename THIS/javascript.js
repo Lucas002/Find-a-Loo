@@ -33,6 +33,7 @@ function myFunction() {
 
 // Map GeoLocation
 var options = {enableHighAccuracy: true};
+var infowindow = new google.maps.InfoWindow();
 var markers = [];
 
 window.setInterval(function(){
@@ -41,10 +42,12 @@ window.setInterval(function(){
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 
+// Reloads map and creates user location marker
 function showLocation(){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 }
 
+// Inits map and creates user location marker
 function onSuccess(position) {
 	var lat = position.coords.latitude;
 	var lng = position.coords.longitude;
@@ -74,16 +77,23 @@ function onSuccess(position) {
 				icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
 				map: map
 			});
-			
+       			
 			(function(marker,i){
+				// infowindow content
+				var contentString = '<p>This is a toilet</p>' + '</br>' + '<p>The coordinates are: </p>' + marker.position;
+
 				google.maps.event.addListener(marker, 'click', function(){ 
-					alert(marker.position);
+					infowindow.close();
+					// Updates the content of the infowindow before opening it
+					infowindow.setContent(contentString);
+					infowindow.open(map, marker);
 				}); 
 			}(markers[i],i));
 		}
 	}
 }
 
+// User location marker
 function showPosition(position){
 	var updatedLat = position.coords.latitude;
 	var updatedLng = position.coords.longitude;
