@@ -72,6 +72,7 @@ function onSuccess(position) {
 		for (var i = 0; i < results.features.length; i++) {
 			var coords = results.features[i].geometry.coordinates;
 			var latLng = new google.maps.LatLng(coords[1],coords[0]);
+			var name = results.features[i].properties.name;
 			markers[i] = new google.maps.Marker({
 				position: latLng,
 				icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
@@ -80,7 +81,7 @@ function onSuccess(position) {
        			
 			(function(marker,i){
 				// infowindow content
-				var contentString = '<p>This is a toilet</p>' + '</br>' + '<p>The coordinates are: </p>' + marker.position;
+				var contentString = '<p>This toilet is the</p>' + '</br>' + name;
 
 				google.maps.event.addListener(marker, 'click', function(){ 
 					infowindow.close();
