@@ -81,7 +81,7 @@ function onSuccess(position) {
        			
 			(function(marker,i){
 				// infowindow content
-				var contentString = '<p>This toilet is the</p>' + '</br>' + name;
+				var contentString = '<div id="iw-container">' + '<div class="iw-title">Toilet</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">This is a toilet</div>' + '<p>This toilet is the: </p>' + name + '</div>' + '</div>';
 
 				google.maps.event.addListener(marker, 'click', function(){ 
 					infowindow.close();
