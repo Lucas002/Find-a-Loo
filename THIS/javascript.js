@@ -61,7 +61,7 @@ function onSuccess(position) {
 		map: map
 	});
 	
-	// Create a <script> tag and set the USGS URL as the source.
+	// Create a <script> tag and set the USGS URL as the source
 	var script = document.createElement('script');
 	// This example uses a local copy of the GeoJSON stored at:
 	// http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
