@@ -65,7 +65,7 @@ function onSuccess(position) {
 	var script = document.createElement('script');
 	// This example uses a local copy of the GeoJSON stored at:
 	// http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-	script.src = 'dsec-5y6t.geojson';
+	script.src = 'convertcsv.geojson';
 	document.getElementsByTagName('head')[0].appendChild(script);
 
 	window.eqfeed_callback = function(results) {
@@ -73,6 +73,7 @@ function onSuccess(position) {
 			var coords = results.features[i].geometry.coordinates;
 			var latLng = new google.maps.LatLng(coords[1],coords[0]);
 			var name = results.features[i].properties.name;
+			var info = results.features[i].properties.info;
 			markers[i] = new google.maps.Marker({
 				position: latLng,
 				icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
@@ -81,7 +82,8 @@ function onSuccess(position) {
        			
 			(function(marker,i){
 				// infowindow content
-				var contentString = '<div id="iw-container">' + '<div class="iw-title">Toilet</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">This is a toilet</div>' + '<p>This toilet is the: </p>' + name + '</div>' + '</div>';
+				var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
+				'<div class="iw-subTitle">'+ info + '</div>' + '</div>' + '</div>';
 
 				google.maps.event.addListener(marker, 'click', function(){ 
 					infowindow.close();
