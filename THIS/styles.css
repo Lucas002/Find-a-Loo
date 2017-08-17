@@ -209,6 +209,7 @@ span.psw {
 
 #iw-container {
     margin-bottom: 5px;
+    max-height: 180px;
 }
 
 /* Blue background header */
