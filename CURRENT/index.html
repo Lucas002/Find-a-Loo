@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Find-a-Loo</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://mysqljs.com/mysql.js"></script>
+	
+	<link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsv3i6uHGlXFG49iNHvyL1gvWS_d7Ba4Y&libraries=places"
+	type="text/javascript"></script>
+
+	</head>
+	
+	<body>
+	
+		<div class="headerLogo">
+ 			<img src="img/FaL_logo.png" alt="FaL logo"  onclick="showLocation()"/>
+ 		</div>
+
+		<header>
+			<button class="hamburger">&#9776;</button>
+			<button class="cross">&#735;</button>
+		</header>
+
+		<div class="menu">
+		  <ul>
+			<a href="#"><li>ADD TOILET</li></a>
+			<a href="#"><li>SORT TOILETS</li></a>
+		  </ul>
+			
+		  <ul style="top: 67%; position: relative;">
+			<a href="#"><li>
+				<div onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</div>
+
+				<div id="id01" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id01').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+					  <label><b>Username</b></label>
+					  <input type="text" placeholder="Enter Username" name="uname" required>
+
+					  <label><b>Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+						
+					  <button type="submit">Login</button>
+					  <input type="checkbox" checked="checked"> Remember me
+					</div>
+
+					<div class="container" style="background-color:#f1f1f1">
+					  <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+			<a href="#"><li>
+				<div onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Register</div>
+
+				<div id="id02" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id02').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+					  <label><b>Username</b></label>
+					  <input type="text" placeholder="Enter Username" name="uname" required>
+
+					  <label><b>Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+					  
+					  <label><b>Repeat Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+					  
+					  <label><b>Email</b></label>
+					  <input type="text" placeholder="Enter Email" name="email" required>
+						
+					  <button type="submit">Register</button>
+					</div>
+
+					<div class="container" style="background-color:#f1f1f1">
+					  <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+		  </ul>
+		  
+		</div>
+
+		<script src="javascript.js"></script>
+
+		<div id="map-canvas"></div>
+		
+	</body>
+</html>
