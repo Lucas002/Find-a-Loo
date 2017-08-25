@@ -85,6 +85,7 @@ function onSuccess(position) {
 			var latLng = new google.maps.LatLng(coords[1],coords[0]);
 			var name = results.features[i].properties.name;
 			var info = results.features[i].properties.info;
+			var img = results.features[i].properties.img;
 			var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
 			markers[i] = new google.maps.Marker({
 				position: latLng,
@@ -92,12 +93,12 @@ function onSuccess(position) {
 				map: map
 			});
 			
-			displayOverlayImage2(img);
+			//displayOverlayImage2(img);
        			
 			(function(marker,i){
 				// infowindow content
 				var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
-				'<div class="iw-subTitle">'+ info + '<br><a href="'+directions+'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
+				'<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '</div>' + '</div>' + '</div>';
 
 				google.maps.event.addListener(marker, 'click', function(){ 
 					calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
@@ -183,7 +184,7 @@ google.maps.event.addListener(infowindow, 'domready', function() {
 function showPosition(position){
 	var updatedLat = position.coords.latitude;
 	var updatedLng = position.coords.longitude;
-	var myUpdatedlatlng = new google.maps.LatLng(updatedLat, UpdatedLng);
+	var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
 	var marker = new google.maps.Marker({
 		position: myUpdatedlatlng,
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
