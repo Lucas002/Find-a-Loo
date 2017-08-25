@@ -91,6 +91,8 @@ function onSuccess(position) {
 				icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
 				map: map
 			});
+			
+			displayOverlayImage2(img);
        			
 			(function(marker,i){
 				// infowindow content
@@ -108,6 +110,26 @@ function onSuccess(position) {
 		}
 	}
 
+}
+
+
+function on() {
+	document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+	document.getElementById("overlay").style.display = "none";
+}
+
+function displayOverlayImage2(image){
+	postscribe('#overlayImage', '<script>displayOverlayImage();</script>');
+	//document.write("<img src='" + displayImage + "'>");
+	//document.getElementById('overlayImage .image').innerHTML = "src='" + img + "'";
+}
+
+function displayOverlayImage(image){
+	var displayImage = image;
+	document.write("<img src='" + displayImage + "'>");
 }
 
 // takes the two direction handlers and to and from coords to draw to map
