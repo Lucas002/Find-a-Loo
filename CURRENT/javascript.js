@@ -25,22 +25,18 @@ $( document ).ready(function() {
 	});
 });
 
-
-
 function myFunction() {
 	var popup = document.getElementById("myPopup");
 	popup.classList.toggle("show");
 }
 
-
 // Map GeoLocation
+var map;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var markers = [];
 
-window.setInterval(function(){
-	var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
-}, 2000);
+var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 
@@ -48,7 +44,6 @@ navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccurac
 function showLocation(){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 }
-
 
 // Inits map and creates user location marker
 function onSuccess(position) {
@@ -70,7 +65,6 @@ function onSuccess(position) {
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
 		map: map
 	});
-	
 	
 	// Create a <script> tag and set the USGS URL as the source
 	var script = document.createElement('script');
@@ -110,9 +104,7 @@ function onSuccess(position) {
 			}(markers[i],i));
 		}
 	}
-
 }
-
 
 function on() {
 	document.getElementById("overlay").style.display = "block";
