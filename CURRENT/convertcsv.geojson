@@ -1881,6 +1881,29 @@ eqfeed_callback({
     "info":"Public Toilet - Level 3",
 	"img":"https://image.ibb.co/gyONWk/Level_3_Toilet_2.jpg"
 	}
+	},
+	{
+	"type": "Feature,",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [ 144.965732,-37.810409 ]
+	},
+	"properties": {
+    "location_state":"",
+    "location_zip":"",
+    "name":"QV",
+    "female":"no",
+    "location_address":"",
+    "location_city":"",
+    "male":"yes",
+    "operator":"City of Melbourne",
+    "lon":144.973994897618,
+    "wheelchair":"no",
+    "baby_facil":"no",
+    "lat":-37.809283,
+    "info":"QV Female and Male Toilet",
+	"img":"https://image.ibb.co/kk6nEF/QV_mf.jpg"
+	}
 	}
 ]
 });
