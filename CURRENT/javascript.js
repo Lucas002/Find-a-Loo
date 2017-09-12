@@ -25,18 +25,24 @@ $( document ).ready(function() {
 	});
 });
 
+
+
+
+
 function myFunction() {
 	var popup = document.getElementById("myPopup");
 	popup.classList.toggle("show");
 }
 
+
 // Map GeoLocation
-var map;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var markers = [];
 
-var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
+window.setInterval(function(){
+	var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
+}, 2000);
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 
@@ -45,13 +51,23 @@ function showLocation(){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 }
 
+	
+	//Google Maps
+	
+	var startTick = 0;
+	var centerScreen;
+
+
 // Inits map and creates user location marker
 function onSuccess(position) {
+	
 	var lat = position.coords.latitude;
 	var lng = position.coords.longitude;
 	
 	//Google Maps
 	var myLatlng = new google.maps.LatLng(lat,lng);
+	
+	
 	var mapOptions = {zoom: 16,center: myLatlng}
 	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	
@@ -66,20 +82,17 @@ function onSuccess(position) {
 		map: map
 	});
 	
-	// Create a <script> tag and set the USGS URL as the source
-	var script = document.createElement('script');
-	// This example uses a local copy of the GeoJSON stored at:
-	// http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-	script.src = 'convertcsv.geojson';
-	document.getElementsByTagName('head')[0].appendChild(script);
-
-	window.eqfeed_callback = function(results) {
-		for (var i = 0; i < results.features.length; i++) {
-			var coords = results.features[i].geometry.coordinates;
-			var latLng = new google.maps.LatLng(coords[1],coords[0]);
-			var name = results.features[i].properties.name;
-			var info = results.features[i].properties.info;
-			var img = results.features[i].properties.img;
+	
+	$.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
+	function (data) {
+    var results = data.Sheet;
+        for (var i = 0; i < results.length; i++) {
+			var lat1 = results[i].latitude;
+			var lon1 = results[i].longitude;
+			var latLng = new google.maps.LatLng(lat1,lon1);
+			var name = results[i].name;
+			var info = results[i].info;
+			var img = results[i].img;
 			var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
 			markers[i] = new google.maps.Marker({
 				position: latLng,
@@ -92,7 +105,7 @@ function onSuccess(position) {
 			(function(marker,i){
 				// infowindow content
 				var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
-				'<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '</div>' + '</div>' + '</div>';
+				'<div class="iw-subTitle">'+ info + '<br><a href="'+directions+'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
 
 				google.maps.event.addListener(marker, 'click', function(){ 
 					calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
@@ -103,7 +116,7 @@ function onSuccess(position) {
 				}); 
 			}(markers[i],i));
 		}
-	}
+	});
 }
 
 function on() {
@@ -177,6 +190,7 @@ function showPosition(position){
 	var updatedLat = position.coords.latitude;
 	var updatedLng = position.coords.longitude;
 	var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
+	
 	var marker = new google.maps.Marker({
 		position: myUpdatedlatlng,
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
