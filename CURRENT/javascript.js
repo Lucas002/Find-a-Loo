@@ -40,9 +40,7 @@ var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var markers = [];
 
-window.setInterval(function(){
-	var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
-}, 2000);
+var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 
@@ -79,6 +77,7 @@ function onSuccess(position) {
 	var marker = new google.maps.Marker({
 		position: myLatlng,
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
+		title: 'Current Position',
 		map: map
 	});
 	
@@ -125,17 +124,6 @@ function on() {
 
 function off() {
 	document.getElementById("overlay").style.display = "none";
-}
-
-function displayOverlayImage2(image){
-	postscribe('#overlayImage', '<script>displayOverlayImage();</script>');
-	//document.write("<img src='" + displayImage + "'>");
-	//document.getElementById('overlayImage .image').innerHTML = "src='" + img + "'";
-}
-
-function displayOverlayImage(image){
-	var displayImage = image;
-	document.write("<img src='" + displayImage + "'>");
 }
 
 // takes the two direction handlers and to and from coords to draw to map
@@ -194,6 +182,7 @@ function showPosition(position){
 	var marker = new google.maps.Marker({
 		position: myUpdatedlatlng,
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
+		title: 'Current Position',
 		map: map
 	});
 }
@@ -201,5 +190,3 @@ function onError(error) {
 	alert('code: ' + error.code + '\n' +
 	'message: ' + error.message + '\n');
 } 	
-
-google.maps.event.addDomListener(window, 'load', onSuccess);
