@@ -36,6 +36,7 @@ function myFunction() {
 
 
 // Map GeoLocation
+var map = null;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var markers = [];
