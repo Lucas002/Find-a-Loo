@@ -1,34 +1,36 @@
 // Get the modal
 var modal = document.getElementById('id01');
 var modal = document.getElementById('id02');
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-	if (event.target == modal) {
-		modal.style.display = "none";
-	}
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 $( document ).ready(function() {
-	$( ".cross" ).hide();
-	$( ".menu" ).hide();
-	$( ".hamburger" ).click(function() {
-	$( ".menu" ).toggle( "slide", { direction: "right" }, 600, function() {
-	$( ".hamburger" ).hide();
-	$( ".cross" ).show();
-	});
-	});
-	$( ".cross" ).click(function() {
-	$( ".menu" ).toggle( "slide", { direction: "right" }, 600, function() {
-	$( ".cross" ).hide();
-	$( ".hamburger" ).show();
-	});
-	});
+    $( ".cross" ).hide();
+    $( ".menu" ).hide();
+    $( ".hamburger" ).click(function() {
+    $( ".menu" ).toggle( "slide", { direction: "right" }, 600, function() {
+    $( ".hamburger" ).hide();
+    $( ".cross" ).show();
+    });
+    });
+    $( ".cross" ).click(function() {
+    $( ".menu" ).toggle( "slide", { direction: "right" }, 600, function() {
+    $( ".cross" ).hide();
+    $( ".hamburger" ).show();
+    });
+    });
 });
 
 function myFunction() {
-	var popup = document.getElementById("myPopup");
-	popup.classList.toggle("show");
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
 }
+
 
 // Map GeoLocation
 var map = null;
@@ -43,76 +45,76 @@ navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccurac
 
 // Reloads map and creates user location marker
 function showLocation(){
-	navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 }
 
 // Inits map and creates user location marker
 function onSuccess(position) {
-	
-	// Latitude and Longitude
-	var lat = position.coords.latitude;
-	var lng = position.coords.longitude;
-	var myLatlng = new google.maps.LatLng(lat,lng);
-	
-	var mapOptions = {zoom: 16,center: myLatlng}
-	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-	
-	// variables for direction services
-	var directionsService = new google.maps.DirectionsService;
-	var directionsDisplay = new google.maps.DirectionsRenderer;
-	directionsDisplay.setMap(map);
-	
-	// User Initial Position Marker
-	var marker = new google.maps.Marker({
-		position: myLatlng,
-		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
-		title: 'Current Position',
-		map: map
-	});
-	
-	
-	$.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
-	function (data) {
+    
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    
+    //Google Maps
+    var myLatlng = new google.maps.LatLng(lat,lng);
+    
+    
+    var mapOptions = {zoom: 16,center: myLatlng}
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    
+    // variables for direction services
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay.setMap(map);
+
+    marker = new google.maps.Marker({
+        position: myLatlng,
+        icon: 'https://image.ibb.co/j8F82F/user_icon.png',
+        title: 'Current Position',
+        map: map
+    });
+    
+    $.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
+    function (data) {
     var results = data.Sheet;
         for (var i = 0; i < results.length; i++) {
-			var lat1 = results[i].latitude;
-			var lon1 = results[i].longitude;
-			var latLng = new google.maps.LatLng(lat1,lon1);
-			var name = results[i].name;
-			var info = results[i].info;
-			var img = results[i].img;
-			var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
-			markers[i] = new google.maps.Marker({
-				position: latLng,
-				icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
-				map: map
-			});
-			
-			//displayOverlayImage2(img);
-       			
-			(function(marker,i){
-				// infowindow content
-				var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
-				'<div class="iw-subTitle">'+ info + '<br><a href="'+directions+'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
+            var lat1 = results[i].latitude;
+            var lon1 = results[i].longitude;
+            var latLng = new google.maps.LatLng(lat1,lon1);
+            var name = results[i].name;
+            var info = results[i].info;
+            var img = results[i].img;
+            var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
+            markers[i] = new google.maps.Marker({
+                position: latLng,
+                icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+                map: map
+            });
+            
+            //displayOverlayImage2(img);
+                
+            (function(marker,i){
+                // infowindow content
+                var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
+                '<div class="iw-subTitle">'+ info + '<br><a href="'+directions+'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
 
-				google.maps.event.addListener(marker, 'click', function(){ 
-					calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
-					infowindow.close();
-					// Updates the content of the infowindow before opening it
-					infowindow.setContent(contentString);
-					infowindow.open(map, marker);
-				}); 
-			}(markers[i],i));
-		}
-	});
+                google.maps.event.addListener(marker, 'click', function(){ 
+                    calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
+                    infowindow.close();
+                    // Updates the content of the infowindow before opening it
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, marker);
+                }); 
+            }(markers[i],i));
+        }
+    });
 }
 
 function on() {
-	document.getElementById("overlay").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
 }
 
 function off() {
-	document.getElementById("overlay").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
 }
 
 // takes the two direction handlers and to and from coords to draw to map
@@ -150,7 +152,7 @@ google.maps.event.addListener(infowindow, 'domready', function() {
     // Remove the white background DIV
     iwBackground.children(':nth-child(4)').css({'display' : 'none'});
 
-	// Changes the desired tail shadow color
+    // Changes the desired tail shadow color
     iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 0px 6px', 'z-index' : '1'});
 
     // Reference to the div that groups the close button elements
@@ -158,11 +160,11 @@ google.maps.event.addListener(infowindow, 'domready', function() {
 
     // Apply the desired effect to the close button
     iwCloseBtn.css({opacity: '1', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
-	
+    
 
 });
 
-// Tracks User's Position
+// Tracks user location and places new marker
 function showPosition(position){
     var updatedLat = position.coords.latitude;
     var updatedLng = position.coords.longitude;
@@ -176,9 +178,12 @@ function showPosition(position){
     }else{
         marker.setPosition(myUpdatedlatlng);
     }
+
 }
 
 function onError(error) {
-	alert('code: ' + error.code + '\n' +
-	'message: ' + error.message + '\n');
-} 	
+    alert('code: ' + error.code + '\n' +
+    'message: ' + error.message + '\n');
+}   
+
+//google.maps.event.addDomListener(window, 'load', position);
