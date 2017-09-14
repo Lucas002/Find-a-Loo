@@ -25,20 +25,16 @@ $( document ).ready(function() {
 	});
 });
 
-
-
-
-
 function myFunction() {
 	var popup = document.getElementById("myPopup");
 	popup.classList.toggle("show");
 }
 
-
 // Map GeoLocation
 var map = null;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
+var marker = null;
 var markers = [];
 
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
@@ -50,22 +46,13 @@ function showLocation(){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 }
 
-	
-	//Google Maps
-	
-	var startTick = 0;
-	var centerScreen;
-
-
 // Inits map and creates user location marker
 function onSuccess(position) {
 	
+	// Latitude and Longitude
 	var lat = position.coords.latitude;
 	var lng = position.coords.longitude;
-	
-	//Google Maps
 	var myLatlng = new google.maps.LatLng(lat,lng);
-	
 	
 	var mapOptions = {zoom: 16,center: myLatlng}
 	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -74,7 +61,8 @@ function onSuccess(position) {
 	var directionsService = new google.maps.DirectionsService;
 	var directionsDisplay = new google.maps.DirectionsRenderer;
 	directionsDisplay.setMap(map);
-
+	
+	// User Initial Position Marker
 	var marker = new google.maps.Marker({
 		position: myLatlng,
 		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
@@ -174,19 +162,22 @@ google.maps.event.addListener(infowindow, 'domready', function() {
 
 });
 
-// User location marker
+// Tracks User's Position
 function showPosition(position){
-	var updatedLat = position.coords.latitude;
-	var updatedLng = position.coords.longitude;
-	var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
-	
-	var marker = new google.maps.Marker({
-		position: myUpdatedlatlng,
-		icon: 'https://image.ibb.co/j8F82F/user_icon.png',
-		title: 'Current Position',
-		map: map
-	});
+    var updatedLat = position.coords.latitude;
+    var updatedLng = position.coords.longitude;
+    var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
+    if (marker == null){
+        marker = new google.maps.Marker({
+            icon: 'https://image.ibb.co/j8F82F/user_icon.png',
+            map: map
+        });
+        marker.setMap(map);
+    }else{
+        marker.setPosition(myUpdatedlatlng);
+    }
 }
+
 function onError(error) {
 	alert('code: ' + error.code + '\n' +
 	'message: ' + error.message + '\n');
