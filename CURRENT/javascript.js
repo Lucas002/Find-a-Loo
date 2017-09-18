@@ -40,6 +40,8 @@ var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var marker = null;
 var markers = [];
+var updatedLat;
+var updatedLng;
 
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
@@ -55,6 +57,8 @@ function onSuccess(position) {
     
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
+    updatedLat = lat;
+	updatedLng = lng;
     
     //Google Maps
     var myLatlng = new google.maps.LatLng(lat,lng);
@@ -189,3 +193,31 @@ function onError(error) {
 }   
 
 //google.maps.event.addDomListener(window, 'load', position);
+
+var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3658Z0EyBZzA8OhoAve1tf2s-K14c/exec";
+  
+  // Make an AJAX call to Google Script
+function insert_value() {
+ 
+	var longitude=	updatedLng;
+	var latitude= updatedLat;
+	
+	
+    var url = script_url+"?callback=ctrlq&longitude="+longitude+"&latitude="+latitude+"&action=insert";
+  
+ 
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+ 
+  }
+
+   function ctrlq(e) {
+  
+	
+	alert('success');
+	
+  }
