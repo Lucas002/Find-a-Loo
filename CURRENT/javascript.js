@@ -201,9 +201,10 @@ function insert_value() {
  
 	var longitude=	updatedLng;
 	var latitude= updatedLat;
+	var name= document.getElementById("toiletName").value;
 	
 	
-    var url = script_url+"?callback=ctrlq&longitude="+longitude+"&latitude="+latitude+"&action=insert";
+    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&latitude="+latitude+"&action=insert";
   
  
     var request = jQuery.ajax({
