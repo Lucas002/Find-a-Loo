@@ -42,32 +42,20 @@
 					</div>
 
 					<div class="container">
-						Location<br>
-						<input type="checkbox" name="loc" value="cur">Current Location<br>
-						<input type="checkbox" name="loc" value="new">Select Location<br>
-						<br>
+						Toilet Name/Location<br>
+						<input type="text" name="toiletName" id="toiletName">
+						<br><br>
 						
 						Details<br>
 						<input type="checkbox" name="det" value="male">Male<br>
 						<input type="checkbox" name="det" value="female">Female<br>		
-						<input type="checkbox" name="det" value="changing">Changing Area<br>
-						<input type="checkbox" name="det" value="showers">Showers<br>						
-						<input type="checkbox" name="det" value="disabled">Disabled Access<br>
-						<input type="checkbox" name="det" value="water">Drinking Water<br>
-						<input type="checkbox" name="det" value="disposal">Sanitary Disposal<br>						
+						<input type="checkbox" name="det" value="baby">Baby Facility<br>						
+						<input type="checkbox" name="det" value="disabled">Disabled Access<br>						
 						<br>
 						
-						<form action="upload.php" method="post" enctype="multipart/form-data">
-							Select images to upload:<br>
-							<input type="submit" value="Upload Image" name="submit"><br>
-						</form>
 						<br>
 						
-						Additional Notes:<br>
-						<textarea rows="4" cols="50"></textarea><br>
-						<br>
-						
-						<input type="submit" value="Submit"><br>
+						<input type="button" onclick="insert_value()" value="Submit"><br>
 						<br>
 						<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
 					</div>
