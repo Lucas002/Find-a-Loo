@@ -50,7 +50,7 @@ navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccurac
 
 // Reloads map and creates user location marker
 function showLocation(){
-    navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+    location.reload();
 }
 
 // Inits map and creates user location marker
