@@ -40,6 +40,7 @@ var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var marker = null;
 var markers = [];
+var circle = null;
 var updatedLat;
 var updatedLng;
 
@@ -58,7 +59,7 @@ function onSuccess(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
     updatedLat = lat;
-	updatedLng = lng;
+    updatedLng = lng;
     
     //Google Maps
     var myLatlng = new google.maps.LatLng(lat,lng);
@@ -172,8 +173,8 @@ google.maps.event.addListener(infowindow, 'domready', function() {
 
 // Tracks user location and places new marker
 function showPosition(position){
-    var updatedLat = position.coords.latitude;
-    var updatedLng = position.coords.longitude;
+    updatedLat = position.coords.latitude;
+    updatedLng = position.coords.longitude;
     var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
     if (marker == null){
         marker = new google.maps.Marker({
@@ -183,6 +184,21 @@ function showPosition(position){
         marker.setMap(map);
     }else{
         marker.setPosition(myUpdatedlatlng);
+    }
+
+    if (circle == null){
+        circle = new google.maps.Circle({
+            center: myUpdatedlatlng,
+            radius: position.coords.accuracy,
+            map: map,
+            fillColor: '#0000FF',
+            fillOpacity: 0.2,
+            strokeColor: '#0000FF',
+            strokeOpacity: 0.3
+        });
+        circle.setMap(map);
+    }else{
+        circle.setCenter(myUpdatedlatlng);
     }
 
 }
