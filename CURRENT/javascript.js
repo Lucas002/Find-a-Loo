@@ -214,13 +214,53 @@ var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3
   
   // Make an AJAX call to Google Script
 function insert_value() {
- 
+	
+	var male;
+	var female;
+	var baby;
+	var disabled;
+	
 	var longitude=	updatedLng;
 	var latitude= updatedLat;
 	var name= document.getElementById("toiletName").value;
 	
+	// male checkbox
+	if(document.getElementById("male").checked == true){
+		male = "yes";	
+	}
 	
-    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&latitude="+latitude+"&action=insert";
+	else {
+		male = "no";
+	}
+	
+	// female checkbox
+	if(document.getElementById("female").checked == true){
+		female = "yes";
+	}
+	
+	else {
+		female = "no";
+	}
+	
+	// baby facility checkbox
+	if(document.getElementById("baby").checked == true){
+		baby = "yes";	
+	}
+	
+	else {
+		baby = "no";
+	}
+	
+	// disability access checkbox
+	if(document.getElementById("disabled").checked == true){
+		disabled = "yes";
+	}
+	
+	else {
+		disabled = "no";
+	}
+	
+    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
  
     var request = jQuery.ajax({
@@ -229,6 +269,7 @@ function insert_value() {
       method: "GET",
       dataType: "jsonp"
     });
+	
  
   }
 
@@ -238,3 +279,4 @@ function insert_value() {
 	alert('success');
 	
   }
+
