@@ -200,7 +200,6 @@ function showPosition(position){
     }else{
         circle.setCenter(myUpdatedlatlng);
     }
-
 }
 
   var checkbox = document.querySelector('input[type="checkbox"]');
@@ -226,7 +225,7 @@ function onError(error) {
 
 var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3658Z0EyBZzA8OhoAve1tf2s-K14c/exec";
   
-  // Make an AJAX call to Google Script
+// Make an AJAX call to Google Script
 function insert_value() {
 	
 	var male;
@@ -242,7 +241,6 @@ function insert_value() {
 	if(document.getElementById("male").checked == true){
 		male = "yes";	
 	}
-	
 	else {
 		male = "no";
 	}
@@ -251,7 +249,6 @@ function insert_value() {
 	if(document.getElementById("female").checked == true){
 		female = "yes";
 	}
-	
 	else {
 		female = "no";
 	}
@@ -260,7 +257,6 @@ function insert_value() {
 	if(document.getElementById("baby").checked == true){
 		baby = "yes";	
 	}
-	
 	else {
 		baby = "no";
 	}
@@ -269,29 +265,22 @@ function insert_value() {
 	if(document.getElementById("disabled").checked == true){
 		disabled = "yes";
 	}
-	
 	else {
 		disabled = "no";
 	}
 	
     var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
- 
     var request = jQuery.ajax({
       crossDomain: true,
       url: url ,
       method: "GET",
       dataType: "jsonp"
-    });
-	
- 
+    });	
   }
 
    function ctrlq(e) {
-  
-	
 	alert('success');
-	
   }
 
 document.addEventListener("deviceready", onDeviceReady, false);
