@@ -203,6 +203,20 @@ function showPosition(position){
 
 }
 
+  var checkbox = document.querySelector('input[type="checkbox"]');
+
+  checkbox.addEventListener('change', function () {
+    if (checkbox.checked) {
+        for(i=0; i<markers.length; i++){
+            markers[i].setMap(null);
+        }
+    } else {
+        for(i=0; i<markers.length; i++){
+            markers[i].setMap(map);
+        }
+    }
+  });
+
 function onError(error) {
     alert('code: ' + error.code + '\n' +
     'message: ' + error.message + '\n');
