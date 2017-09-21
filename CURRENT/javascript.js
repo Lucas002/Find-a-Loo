@@ -294,3 +294,8 @@ function insert_value() {
 	
   }
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    StatusBar.styleLightContent();
+}
+
