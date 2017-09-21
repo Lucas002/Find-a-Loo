@@ -40,9 +40,12 @@ var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
 var marker = null;
 var markers = [];
+var markerz = null;
 var circle = null;
 var updatedLat;
 var updatedLng;
+var destLat;
+var destLng;
 
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
@@ -110,6 +113,8 @@ function onSuccess(position) {
                     // Updates the content of the infowindow before opening it
                     infowindow.setContent(contentString);
                     infowindow.open(map, marker);
+		    destLat = this.position.lat();
+                    destLng = this.position.lng();
                 }); 
             }(markers[i],i));
         }
@@ -202,18 +207,32 @@ function showPosition(position){
     }
 }
 
-  var checkbox = document.querySelector('input[type="checkbox"]');
-
-  checkbox.addEventListener('change', function () {
-    if (checkbox.checked) {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(null);
-        }
-    } else {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(map);
-        }
+function destMarker(){
+    var destLatlng = new google.maps.LatLng(destLat, destLng);
+    if (markerz == null){
+        markerz = new google.maps.Marker({
+            icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+            map: map
+        });
+        markerz.setMap(map);
+    }else{
+        markerz.setPosition(destLatlng);
     }
+}
+
+var checkbox = document.querySelector('input[type="checkbox"]');
+
+checkbox.addEventListener('change', function () {
+   if (checkbox.checked) {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(null);
+	   destMarker();
+       }
+   } else {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(map);
+       }
+   }
   });
 
 function onError(error) {
