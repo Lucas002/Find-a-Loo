@@ -35,26 +35,22 @@ function myFunction() {
 
 
 // Map GeoLocation
-var map = null;
+var map
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
-var marker = null;
+var marker
 var markers = [];
-var gmarkers = []
-var filters = {male:false, female:false, baby_facil:false, wheelchair:false}
-var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
+var circle = null;
+var updatedLat;
+var updatedLng;
 
-navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
-
-
+var filters = {male: false, female: false, baby: false, disabled: false}
 
 $(function () {
     $('input[name=filter]').change(function (e) {
      map_filter(this.id);
       filter_markers()
   });
-
-
 })
 
 var get_set_options = function() {
@@ -69,9 +65,12 @@ var get_set_options = function() {
 
 var filter_markers = function() {  
   set_filters = get_set_options()
+  
+
   for (i = 0; i < markers.length; i++) {
     marker = markers[i];
     keep=true
+    mapset = map
     for (opt=0; opt<set_filters.length; opt++) {
       if (!marker.properties[set_filters[opt]]) {
         keep = false;
@@ -87,11 +86,17 @@ var map_filter = function(id_val) {
    else
       filters[id_val] = true
 }
+  
+  
+  
+  
+var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
+navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
 
 // Reloads map and creates user location marker
 function showLocation(){
-    navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+    location.reload();
 }
 
 // Inits map and creates user location marker
@@ -99,6 +104,8 @@ function onSuccess(position) {
     
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
+    updatedLat = lat;
+    updatedLng = lng;
     
     //Google Maps
     var myLatlng = new google.maps.LatLng(lat,lng);
@@ -118,7 +125,6 @@ function onSuccess(position) {
         title: 'Current Position',
         map: map
     });
-	
     
     $.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
     function (data) {
@@ -130,10 +136,6 @@ function onSuccess(position) {
             var name = results[i].name;
             var info = results[i].info;
             var img = results[i].img;
-			var male = results[i].male;
-			var female = results[i].female;
-			var baby_facil = results[i].baby_facil;
-			var wheelchair = results[i].wheelchair;
             var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
             markers[i] = new google.maps.Marker({
                 position: latLng,
@@ -159,7 +161,6 @@ function onSuccess(position) {
         }
     });
 }
-
 
 function on() {
     document.getElementById("overlay").style.display = "block";
@@ -218,8 +219,8 @@ google.maps.event.addListener(infowindow, 'domready', function() {
 
 // Tracks user location and places new marker
 function showPosition(position){
-    var updatedLat = position.coords.latitude;
-    var updatedLng = position.coords.longitude;
+    updatedLat = position.coords.latitude;
+    updatedLng = position.coords.longitude;
     var myUpdatedlatlng = new google.maps.LatLng(updatedLat, updatedLng);
     if (marker == null){
         marker = new google.maps.Marker({
@@ -231,7 +232,36 @@ function showPosition(position){
         marker.setPosition(myUpdatedlatlng);
     }
 
+    if (circle == null){
+        circle = new google.maps.Circle({
+            center: myUpdatedlatlng,
+            radius: position.coords.accuracy,
+            map: map,
+            fillColor: '#0000FF',
+            fillOpacity: 0.2,
+            strokeColor: '#0000FF',
+            strokeOpacity: 0.3
+        });
+        circle.setMap(map);
+    }else{
+        circle.setCenter(myUpdatedlatlng);
+    }
+
 }
+
+  var checkbox = document.querySelector('input[type="checkbox"]');
+
+  checkbox.addEventListener('change', function () {
+    if (checkbox.checked) {
+        for(i=0; i<markers.length; i++){
+            markers[i].setMap(null);
+        }
+    } else {
+        for(i=0; i<markers.length; i++){
+            markers[i].setMap(map);
+        }
+    }
+  });
 
 function onError(error) {
     alert('code: ' + error.code + '\n' +
@@ -239,3 +269,80 @@ function onError(error) {
 }   
 
 //google.maps.event.addDomListener(window, 'load', position);
+
+var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3658Z0EyBZzA8OhoAve1tf2s-K14c/exec";
+  
+  // Make an AJAX call to Google Script
+function insert_value() {
+	
+	var male;
+	var female;
+	var baby;
+	var disabled;
+	
+	var longitude=	updatedLng;
+	var latitude= updatedLat;
+	var name= document.getElementById("toiletName").value;
+	
+	// male checkbox
+	if(document.getElementById("male").checked == true){
+		male = "yes";	
+	}
+	
+	else {
+		male = "no";
+	}
+	
+	// female checkbox
+	if(document.getElementById("female").checked == true){
+		female = "yes";
+	}
+	
+	else {
+		female = "no";
+	}
+	
+	// baby facility checkbox
+	if(document.getElementById("baby").checked == true){
+		baby = "yes";	
+	}
+	
+	else {
+		baby = "no";
+	}
+	
+	// disability access checkbox
+	if(document.getElementById("disabled").checked == true){
+		disabled = "yes";
+	}
+	
+	else {
+		disabled = "no";
+	}
+	
+    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
+  
+ 
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+	
+ 
+  }
+
+   function ctrlq(e) {
+  
+	
+	alert('success');
+	
+  }
+
+
+  
+  
+  
+  
+  
