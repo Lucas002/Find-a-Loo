@@ -229,6 +229,10 @@ checkbox.addEventListener('change', function () {
 	   destMarker();
        }
        infowindow.open(map, markerz);
+       google.maps.event.addListener(markerz, 'click', function(){ 
+            infowindow.close();
+            infowindow.open(map, markerz);
+       });
    } else {
        for(i=0; i<markers.length; i++){
            markers[i].setMap(map);
