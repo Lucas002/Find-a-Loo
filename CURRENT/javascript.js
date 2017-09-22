@@ -73,7 +73,7 @@ function onSuccess(position) {
     
     // variables for direction services
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
     directionsDisplay.setMap(map);
 
     marker = new google.maps.Marker({
