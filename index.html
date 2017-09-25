@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Find-a-Loo</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://mysqljs.com/mysql.js"></script>
+	
+	<link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsv3i6uHGlXFG49iNHvyL1gvWS_d7Ba4Y&libraries=places"
+	type="text/javascript"></script>
+
+	<!-- FIREBASE  SIGN IN SCRIPT -->
+	 <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+	 <script src="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
+
+  </head>
+	
+	<body>
+	
+		<header>
+			<div class="switch">
+	           		<input id="toilet-toggle" class="toilet-toggle toilet-toggle-round"  type="checkbox">
+	           		<label for="toilet-toggle"></label>
+	        	</div>
+
+			<div class="headerLogo">
+	 			<img src="img/FaL_logo.png" alt="FaL logo"  onclick="showLocation()"/>
+	 		</div>
+			
+			<button class="hamburger">&#9776;</button>
+			<button class="cross">&#735;</button>
+		</header>
+
+		<div class="menu">
+		  <ul>
+			<a href="#"><li>
+				<div onclick="document.getElementById('id01').style.display='block'" style="width:auto;">ADD TOILETS</div>
+
+				<div id="id01" class="modal">
+				  
+				  <form class="modal-content animate">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id01').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+						Toilet Name/Location<br>
+						<input type="text" name="toiletName" id="toiletName">
+						<br><br>
+						
+						Details<br>
+						<input type="checkbox" name="male" id="male" value="male" checked="checked">Male<br>
+						<input type="checkbox" name="female" id="female" value="female" checked="checked">Female<br>		
+						<input type="checkbox" name="baby" id="baby" value="baby" checked="checked">Baby Facility<br>						
+						<input type="checkbox" name="disabled" id="disabled" value="disabled" checked="checked">Disabled Access<br>							
+						<br>
+						
+						<br>
+						
+						<input type="button" onclick="insert_value()" value="Submit"><br>
+						<br>
+						<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+			
+			
+			<a href="#"><li>
+			<div onclick="document.getElementById('id02').style.display='block'" style="width:auto;">SORT TOILETS</div>
+
+				<div id="id02" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id02').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+
+						Filter<br>
+						<input type="checkbox" name="det" value="male" checked="checked">Male<br>
+						<input type="checkbox" name="det" value="female" checked="checked">Female<br>		
+						<input type="checkbox" name="det" value="changing" checked="checked">Changing Area<br>
+						<input type="checkbox" name="det" value="showers" checked="checked">Showers<br>						
+						<input type="checkbox" name="det" value="disabled" checked="checked">Disabled Access<br>
+						<input type="checkbox" name="det" value="water" checked="checked">Drinking Water<br>
+						<input type="checkbox" name="det" value="disposal" checked="checked">Sanitary Disposal<br>						
+						<br>
+						
+						<input type="submit" value="Submit"><br>
+						<br>
+						
+						<button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+		  </ul>
+			
+		  <ul style="top: 67%; position: relative;">
+			<a href="#"><li>
+				<div onclick="document.getElementById('id03').style.display='block'" style="width:auto;">Login</div>
+
+				<div id="id03" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id03').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<!-- <div class="container">
+					  <label><b>Username</b></label>
+					  <input type="text" placeholder="Enter Username" name="uname" required>
+
+					  <label><b>Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+						
+					  <button type="submit">Login</button>
+					  <input type="checkbox" checked="checked"> Remember me<br>
+					  <br>
+					  <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+					</div> -->
+
+					<div id="firebaseui-auth-container"></div>
+					<button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+          			<div id="account-details"></div>
+          			<div id="sign-in-status"></div>
+          			<button type="button" onclick="document.getElementById('id03').style.display='none'" id="sign-out">Logout</button>
+				  </form>
+				</div>
+			</li></a>
+			
+			
+			<a href="#"><li>
+				<div onclick="document.getElementById('id04').style.display='block'" style="width:auto;">Register</div>
+
+				<div id="id04" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id04').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+					  <label><b>Username</b></label>
+					  <input type="text" placeholder="Enter Username" name="uname" required>
+
+					  <label><b>Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+					  
+					  <label><b>Repeat Password</b></label>
+					  <input type="password" placeholder="Enter Password" name="psw" required>
+					  
+					  <label><b>Email</b></label>
+					  <input type="text" placeholder="Enter Email" name="email" required>
+						
+					  <button type="submit">Register</button><br>
+					  <br>
+					  <button type="button" onclick="document.getElementById('id04').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+		  </ul>
+		  
+		</div>
+
+		<script src="javascript.js"></script>
+
+		<div id="map-canvas"></div>
+		
+		<div id="overlay" onclick="off()">
+			<div id="overlayImage"></div>
+			<!--div id="overlayImage" value=""><script>displayOverlayImage();</script></div-->
+			<!--div id="overlayImage" value="" /><img class= "image"></div-->
+		</div>
+		
+	</body>
+</html>

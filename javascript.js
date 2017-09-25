@@ -35,61 +35,18 @@ function myFunction() {
 
 
 // Map GeoLocation
-var map
+var map = null;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
-var marker
+var marker = null;
 var markers = [];
+var markerz = null;
 var circle = null;
 var updatedLat;
 var updatedLng;
+var destLat;
+var destLng;
 
-var filters = {male: false, female: false, baby: false, disabled: false}
-
-$(function () {
-    $('input[name=filter]').change(function (e) {
-     map_filter(this.id);
-      filter_markers()
-  });
-})
-
-var get_set_options = function() {
-  ret_array = []
-  for (option in filters) {
-    if (filters[option]) {
-      ret_array.push(option)
-    }
-  }
-  return ret_array;
-}
-
-var filter_markers = function() {  
-  set_filters = get_set_options()
-  
-
-  for (i = 0; i < markers.length; i++) {
-    marker = markers[i];
-    keep=true
-    mapset = map
-    for (opt=0; opt<set_filters.length; opt++) {
-      if (!marker.properties[set_filters[opt]]) {
-        keep = false;
-      }
-    }
-    marker.setVisible(keep)
-  }
-}
-
-var map_filter = function(id_val) {
-   if (filters[id_val]) 
-      filters[id_val] = false
-   else
-      filters[id_val] = true
-}
-  
-  
-  
-  
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
@@ -156,6 +113,8 @@ function onSuccess(position) {
                     // Updates the content of the infowindow before opening it
                     infowindow.setContent(contentString);
                     infowindow.open(map, marker);
+		    destLat = this.position.lat();
+                    destLng = this.position.lng();
                 }); 
             }(markers[i],i));
         }
@@ -246,21 +205,34 @@ function showPosition(position){
     }else{
         circle.setCenter(myUpdatedlatlng);
     }
-
 }
 
-  var checkbox = document.querySelector('input[type="checkbox"]');
-
-  checkbox.addEventListener('change', function () {
-    if (checkbox.checked) {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(null);
-        }
-    } else {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(map);
-        }
+function destMarker(){
+    var destLatlng = new google.maps.LatLng(destLat, destLng);
+    if (markerz == null){
+        markerz = new google.maps.Marker({
+            icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+            map: map
+        });
+        markerz.setMap(map);
+    }else{
+        markerz.setPosition(destLatlng);
     }
+}
+
+var checkbox = document.querySelector('input[type="checkbox"]');
+
+checkbox.addEventListener('change', function () {
+   if (checkbox.checked) {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(null);
+	   destMarker();
+       }
+   } else {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(map);
+       }
+   }
   });
 
 function onError(error) {
@@ -272,7 +244,7 @@ function onError(error) {
 
 var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3658Z0EyBZzA8OhoAve1tf2s-K14c/exec";
   
-  // Make an AJAX call to Google Script
+// Make an AJAX call to Google Script
 function insert_value() {
 	
 	var male;
@@ -288,7 +260,6 @@ function insert_value() {
 	if(document.getElementById("male").checked == true){
 		male = "yes";	
 	}
-	
 	else {
 		male = "no";
 	}
@@ -297,7 +268,6 @@ function insert_value() {
 	if(document.getElementById("female").checked == true){
 		female = "yes";
 	}
-	
 	else {
 		female = "no";
 	}
@@ -306,7 +276,6 @@ function insert_value() {
 	if(document.getElementById("baby").checked == true){
 		baby = "yes";	
 	}
-	
 	else {
 		baby = "no";
 	}
@@ -315,34 +284,95 @@ function insert_value() {
 	if(document.getElementById("disabled").checked == true){
 		disabled = "yes";
 	}
-	
 	else {
 		disabled = "no";
 	}
 	
     var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
- 
     var request = jQuery.ajax({
       crossDomain: true,
       url: url ,
       method: "GET",
       dataType: "jsonp"
-    });
-	
- 
+    });	
   }
 
    function ctrlq(e) {
-  
-	
 	alert('success');
-	
   }
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    StatusBar.styleLightContent();
+}
 
-  
-  
-  
-  
-  
+// <!-- FIREBASE  SIGN IN SCRIPT -->
+var config = {
+    apiKey: "AIzaSyCLGlR2YP_WpZ7AmGiQV3yHiWmA0LPCBLA",
+    authDomain: "findalooapp.firebaseapp.com",
+    databaseURL: "https://findalooapp.firebaseio.com",
+    projectId: "findalooapp",
+    storageBucket: "findalooapp.appspot.com",
+    messagingSenderId: "891714299619"
+  };
+  firebase.initializeApp(config);
+
+ // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: 'index.html',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+
+initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            // var emailVerified = user.emailVerified;
+            // var photoURL = user.photoURL;
+            // var uid = user.uid;
+            // var phoneNumber = user.phoneNumber;
+            // var providerData = user.providerData;
+            user.getIdToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = ' is Logged In';
+              document.getElementById('sign-out').addEventListener('click', function() {
+              firebase.auth().signOut();
+            });
+              document.getElementById('account-details').textContent = JSON.stringify({
+                DisplayName: displayName,
+                Email: email,
+                // emailVerified: emailVerified,
+                // phoneNumber: phoneNumber,
+                // photoURL: photoURL,
+                // uid: uid,
+                // accessToken: accessToken,
+                // providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
