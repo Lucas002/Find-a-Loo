@@ -73,7 +73,7 @@ function onSuccess(position) {
     
     // variables for direction services
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    var directionsDisplay = new google.maps.DirectionsRenderer;
     directionsDisplay.setMap(map);
 
     marker = new google.maps.Marker({
@@ -228,11 +228,6 @@ checkbox.addEventListener('change', function () {
            markers[i].setMap(null);
 	   destMarker();
        }
-       infowindow.open(map, markerz);
-       google.maps.event.addListener(markerz, 'click', function(){ 
-            infowindow.close();
-            infowindow.open(map, markerz);
-       });
    } else {
        for(i=0; i<markers.length; i++){
            markers[i].setMap(map);
@@ -312,3 +307,72 @@ function onDeviceReady() {
     StatusBar.styleLightContent();
 }
 
+// <!-- FIREBASE  SIGN IN SCRIPT -->
+var config = {
+    apiKey: "AIzaSyCLGlR2YP_WpZ7AmGiQV3yHiWmA0LPCBLA",
+    authDomain: "findalooapp.firebaseapp.com",
+    databaseURL: "https://findalooapp.firebaseio.com",
+    projectId: "findalooapp",
+    storageBucket: "findalooapp.appspot.com",
+    messagingSenderId: "891714299619"
+  };
+  firebase.initializeApp(config);
+
+ // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: 'index.html',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+
+initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            // var emailVerified = user.emailVerified;
+            // var photoURL = user.photoURL;
+            // var uid = user.uid;
+            // var phoneNumber = user.phoneNumber;
+            // var providerData = user.providerData;
+            user.getIdToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = ' is Logged In';
+              document.getElementById('sign-out').addEventListener('click', function() {
+              firebase.auth().signOut();
+            });
+              document.getElementById('account-details').textContent = JSON.stringify({
+                DisplayName: displayName,
+                Email: email,
+                // emailVerified: emailVerified,
+                // phoneNumber: phoneNumber,
+                // photoURL: photoURL,
+                // uid: uid,
+                // accessToken: accessToken,
+                // providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
