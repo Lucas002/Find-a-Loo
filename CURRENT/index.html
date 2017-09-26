@@ -40,11 +40,10 @@
 				<div onclick="document.getElementById('id01').style.display='block'" style="width:auto;">ADD TOILETS</div>
 
 				<div id="id01" class="modal">
-				  
 				  <form class="modal-content animate">
-					<div class="imgcontainer">
-					  <span onclick="document.getElementById('id01').style.display='none'" class="cross2" title="Close Modal">&times;</span>
-					</div>
+				  		<div class="imgcontainer">
+					  		<span onclick="document.getElementById('id01').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+						</div>
 
 					<div class="container">
 						Toilet Name/Location<br>
@@ -60,9 +59,9 @@
 						
 						<br>
 						
-						<input type="button" onclick="insert_value()" value="Submit"><br>
-						<br>
-						<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+						<div class="wrapper">
+							<input type="button" class="submitBtn" onclick="insert_value()" value="Submit">
+						</div>
 					</div>
 				  </form>
 				</div>
@@ -91,10 +90,9 @@
 						<input type="checkbox" name="det" value="disposal" checked="checked">Sanitary Disposal<br>						
 						<br>
 						
-						<input type="submit" value="Submit"><br>
-						<br>
-						
-						<button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+						<div class="wrapper">
+						<input type="submit" class="submitBtn" value="Submit">
+						</div>
 					</div>
 				  </form>
 				</div>
@@ -166,12 +164,6 @@
 		<script src="javascript.js"></script>
 
 		<div id="map-canvas"></div>
-		
-		<div id="overlay" onclick="off()">
-			<div id="overlayImage"></div>
-			<!--div id="overlayImage" value=""><script>displayOverlayImage();</script></div-->
-			<!--div id="overlayImage" value="" /><img class= "image"></div-->
-		</div>
 		
 	</body>
 </html>
