@@ -68,7 +68,7 @@ function onSuccess(position) {
     var myLatlng = new google.maps.LatLng(lat,lng);
     
     
-    var mapOptions = {zoom: 16,center: myLatlng}
+    var mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     // variables for direction services
