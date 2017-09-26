@@ -105,7 +105,7 @@ function onSuccess(position) {
             (function(marker,i){
                 // infowindow content
                 var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
-                '<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '<br><a href="'+ directions +'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
+                '<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '<br><a href="'+ directions +'" target="_blank">Open in Google Maps</a>' + '</div>' + '</div>' + '</div>';
 
                 google.maps.event.addListener(marker, 'click', function(){ 
                     calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
