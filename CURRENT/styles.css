@@ -144,6 +144,7 @@ input[type=text], input[type=password], input[type=email] {
 }
 .container {
 	padding: 16px;
+  font-size: 15px;
 }
 span.psw {
 	float: right;
@@ -169,9 +170,9 @@ span.psw {
 	width: 80%; /* Could be more or less, depending on screen size */
 }
 .cross2 {
-	position: absolute;
-	right: 25px;
-	top: 0;
+	float: right;
+	padding-right: 15px;
+	top: 0px;
 	color: #000;
 	font-size: 35px;
 	font-weight: bold;
@@ -325,3 +326,20 @@ input.toilet-toggle-round:checked + label:after {
   user-select: none;
 }
 
+.submitBtn{
+  background-color: #002fa0;
+  border: 1px solid #bfbfbf;
+  color: white;
+  padding: 15px 15px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.wrapper {
+    text-align: center;
+}
