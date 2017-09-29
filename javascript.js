@@ -35,61 +35,18 @@ function myFunction() {
 
 
 // Map GeoLocation
-var map
+var map = null;
 var options = {enableHighAccuracy: true};
 var infowindow = new google.maps.InfoWindow();
-var marker
+var marker = null;
 var markers = [];
+var markerz = null;
 var circle = null;
 var updatedLat;
 var updatedLng;
+var destLat;
+var destLng;
 
-var filters = {male: false, female: false, baby: false, disabled: false}
-
-$(function () {
-    $('input[name=filter]').change(function (e) {
-     map_filter(this.id);
-      filter_markers()
-  });
-})
-
-var get_set_options = function() {
-  ret_array = []
-  for (option in filters) {
-    if (filters[option]) {
-      ret_array.push(option)
-    }
-  }
-  return ret_array;
-}
-
-var filter_markers = function() {  
-  set_filters = get_set_options()
-  
-
-  for (i = 0; i < markers.length; i++) {
-    marker = markers[i];
-    keep=true
-    mapset = map
-    for (opt=0; opt<set_filters.length; opt++) {
-      if (!marker.properties[set_filters[opt]]) {
-        keep = false;
-      }
-    }
-    marker.setVisible(keep)
-  }
-}
-
-var map_filter = function(id_val) {
-   if (filters[id_val]) 
-      filters[id_val] = false
-   else
-      filters[id_val] = true
-}
-  
-  
-  
-  
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
@@ -111,12 +68,12 @@ function onSuccess(position) {
     var myLatlng = new google.maps.LatLng(lat,lng);
     
     
-    var mapOptions = {zoom: 16,center: myLatlng}
+    var mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     // variables for direction services
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
     directionsDisplay.setMap(map);
 
     marker = new google.maps.Marker({
@@ -136,6 +93,10 @@ function onSuccess(position) {
             var name = results[i].name;
             var info = results[i].info;
             var img = results[i].img;
+			var baby1 = results[i].baby;
+			var male1 = results[i].male;
+			var female1 = results[i].female;
+			var disabled1 = results[i].disabled;
             var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
             markers[i] = new google.maps.Marker({
                 position: latLng,
@@ -148,7 +109,7 @@ function onSuccess(position) {
             (function(marker,i){
                 // infowindow content
                 var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
-                '<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '<br><a href="'+ directions +'" target="_blank">Get directions</a>' + '</div>' + '</div>' + '</div>';
+                '<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '<br><a href="'+ directions +'" target="_blank">Open in Google Maps</a>' + '</div>' + '</div>' + '</div>';
 
                 google.maps.event.addListener(marker, 'click', function(){ 
                     calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
@@ -156,6 +117,8 @@ function onSuccess(position) {
                     // Updates the content of the infowindow before opening it
                     infowindow.setContent(contentString);
                     infowindow.open(map, marker);
+		    destLat = this.position.lat();
+                    destLng = this.position.lng();
                 }); 
             }(markers[i],i));
         }
@@ -246,21 +209,39 @@ function showPosition(position){
     }else{
         circle.setCenter(myUpdatedlatlng);
     }
-
 }
 
-  var checkbox = document.querySelector('input[type="checkbox"]');
-
-  checkbox.addEventListener('change', function () {
-    if (checkbox.checked) {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(null);
-        }
-    } else {
-        for(i=0; i<markers.length; i++){
-            markers[i].setMap(map);
-        }
+function destMarker(){
+    var destLatlng = new google.maps.LatLng(destLat, destLng);
+    if (markerz == null){
+        markerz = new google.maps.Marker({
+            icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+            map: map
+        });
+        markerz.setMap(map);
+    }else{
+        markerz.setPosition(destLatlng);
     }
+}
+
+var checkbox = document.querySelector('input[type="checkbox"]');
+
+checkbox.addEventListener('change', function () {
+   if (checkbox.checked) {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(null);
+	   destMarker();
+       }
+       infowindow.open(map, markerz);
+       google.maps.event.addListener(markerz, 'click', function(){ 
+            infowindow.close();
+            infowindow.open(map, markerz);
+       });
+   } else {
+       for(i=0; i<markers.length; i++){
+           markers[i].setMap(map);
+       }
+   }
   });
 
 function onError(error) {
@@ -272,7 +253,7 @@ function onError(error) {
 
 var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3658Z0EyBZzA8OhoAve1tf2s-K14c/exec";
   
-  // Make an AJAX call to Google Script
+// Make an AJAX call to Google Script
 function insert_value() {
 	
 	var male;
@@ -288,7 +269,6 @@ function insert_value() {
 	if(document.getElementById("male").checked == true){
 		male = "yes";	
 	}
-	
 	else {
 		male = "no";
 	}
@@ -297,7 +277,6 @@ function insert_value() {
 	if(document.getElementById("female").checked == true){
 		female = "yes";
 	}
-	
 	else {
 		female = "no";
 	}
@@ -306,7 +285,6 @@ function insert_value() {
 	if(document.getElementById("baby").checked == true){
 		baby = "yes";	
 	}
-	
 	else {
 		baby = "no";
 	}
@@ -315,34 +293,95 @@ function insert_value() {
 	if(document.getElementById("disabled").checked == true){
 		disabled = "yes";
 	}
-	
 	else {
 		disabled = "no";
 	}
 	
     var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
- 
     var request = jQuery.ajax({
       crossDomain: true,
       url: url ,
       method: "GET",
       dataType: "jsonp"
-    });
-	
- 
+    });	
   }
 
    function ctrlq(e) {
-  
-	
 	alert('success');
-	
   }
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    StatusBar.styleLightContent();
+}
 
+
+  function filter() {
+	
+	var male1;
+	var female1;
+	var baby1;
+	var disabled1;
+
+	for(i=0; i<markers.length; i++){
+		marker = markers[i];
+	}
+	
+	if(document.getElementById("male1").checked == true){
+		for(i=0; i<markers.length; i++){
+			if(markers[i].male1 == "yes"){
+				marker.setVisible(true);
+			} else {
+				marker.setVisible(false);
+			}
+		}
+	}
+	
+	if(document.getElementById("female1").checked == true){
+		for(i=0; i<markers.length; i++){
+			if(markers[i].female1 == "yes"){
+				marker.setVisible(true);
+			} else {
+				marker.setVisible(false);
+			}
+		}
+	}
+	
+	if(document.getElementById("baby1").checked == true){
+		for(i=0; i<markers.length; i++){
+			if(markers[i].baby1 == "yes"){
+				marker.setVisible(true);
+			} else {
+				marker.setVisible(false);
+			}
+		}
+	}
+	
+	if(document.getElementById("disabled1").checked == true){
+		for(i=0; i<markers.length; i++){
+			if(markers[i].disabled1 == "yes"){
+				marker.setVisible(true);
+			} else {
+				marker.setVisible(false);
+			}
+		}
+	}
+	
+	if((document.getElementById("disabled1").checked == true) && (document.getElementById("baby1").checked == true) && (document.getElementById("female1").checked == true)&& (document.getElementById("male1").checked == true)){
+		for(i=0; i<markers.length; i++){
+			markers[i].setVisible(true);
+		}
+	}
+
+	if((document.getElementById("disabled1").checked == false) && (document.getElementById("baby1").checked == false) && (document.getElementById("female1").checked == false)&& (document.getElementById("male1").checked == false)){
+		for(i=0; i<markers.length; i++){
+			markers[i].setVisible(true);
+		}
+	}
+	
+}	
   
   
   
-  
-  
+
