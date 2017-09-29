@@ -260,6 +260,7 @@ function insert_value() {
 	var longitude=	updatedLng;
 	var latitude= updatedLat;
 	var name= document.getElementById("toiletName").value;
+	var info= document.getElementById("toiletInfo").value;
 	
 	// male checkbox
 	if(document.getElementById("male").checked == true){
@@ -293,7 +294,7 @@ function insert_value() {
 		disabled = "no";
 	}
 	
-    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
+    var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&info="+info+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
     var request = jQuery.ajax({
       crossDomain: true,
