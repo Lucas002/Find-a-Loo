@@ -331,9 +331,9 @@ function onDeviceReady() {
 	if(document.getElementById("male1").checked == true){
 		for(i=0; i<markers.length; i++){
 			if(markers[i].male1 == "yes"){
-				marker.setVisible(true);
+				markers[i].setVisible(true);
 			} else {
-				marker.setVisible(false);
+				markers[i].setVisible(false);
 			}
 		}
 	}
@@ -341,9 +341,9 @@ function onDeviceReady() {
 	if(document.getElementById("female1").checked == true){
 		for(i=0; i<markers.length; i++){
 			if(markers[i].female1 == "yes"){
-				marker.setVisible(true);
+				markers[i].setVisible(true);
 			} else {
-				marker.setVisible(false);
+				markers[i].setVisible(false);
 			}
 		}
 	}
@@ -351,9 +351,9 @@ function onDeviceReady() {
 	if(document.getElementById("baby1").checked == true){
 		for(i=0; i<markers.length; i++){
 			if(markers[i].baby1 == "yes"){
-				marker.setVisible(true);
+				markers[i].setVisible(true);
 			} else {
-				marker.setVisible(false);
+				markers[i].setVisible(false);
 			}
 		}
 	}
@@ -361,9 +361,9 @@ function onDeviceReady() {
 	if(document.getElementById("disabled1").checked == true){
 		for(i=0; i<markers.length; i++){
 			if(markers[i].disabled1 == "yes"){
-				marker.setVisible(true);
+				markers[i].setVisible(true);
 			} else {
-				marker.setVisible(false);
+				markers[i].setVisible(false);
 			}
 		}
 	}
