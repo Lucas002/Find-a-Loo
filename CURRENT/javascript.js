@@ -46,6 +46,12 @@ var updatedLat;
 var updatedLng;
 var destLat;
 var destLng;
+var lat;
+var lng;
+var myLatlng;
+var mapOptions;
+var sortToggle;
+var addMarker;
 
 var watchID = navigator.geolocation.watchPosition(showPosition, onError, options);
 
@@ -59,16 +65,16 @@ function showLocation(){
 // Inits map and creates user location marker
 function onSuccess(position) {
     
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
+    lat = position.coords.latitude;
+    lng = position.coords.longitude;
     updatedLat = lat;
     updatedLng = lng;
     
     //Google Maps
-    var myLatlng = new google.maps.LatLng(lat,lng);
+    myLatlng = new google.maps.LatLng(lat,lng);
     
     
-    var mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
+    mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     
     // variables for direction services
@@ -119,6 +125,109 @@ function onSuccess(position) {
             }(markers[i],i));
         }
     });
+}
+
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function resetFunction() {
+    
+    updatedLat = lat;
+    updatedLng = lng;
+    
+    //Google Maps
+    myLatlng = new google.maps.LatLng(lat,lng);
+    
+    
+    mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    
+    // variables for direction services
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    directionsDisplay.setMap(map);
+
+    marker = new google.maps.Marker({
+        position: myLatlng,
+        icon: 'https://image.ibb.co/j8F82F/user_icon.png',
+        title: 'Current Position',
+        map: map
+    });
+	
+	$.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
+    function (data) {
+    var results = data.Sheet;
+        for (var i = 0; i < results.length; i++) {
+            var lat1 = results[i].latitude;
+            var lon1 = results[i].longitude;
+            var latLng = new google.maps.LatLng(lat1,lon1);
+            var name = results[i].name;
+            var info = results[i].info;
+            var img = results[i].img;
+			
+			var maleVal = results[i].male;
+			var femaleVal = results[i].female;
+			var babyVal = results[i].baby;
+			var disabledVal = results[i].disabled;
+			
+            var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
+			
+				addMarker = "no";
+				
+				if(document.getElementById("sortMale").checked == true){
+					if(maleVal == "yes"){
+						addMarker = "yes";
+					}
+				}
+				
+				if(document.getElementById("sortFemale").checked == true){
+					if(femaleVal == "yes"){
+						addMarker = "yes";
+					}
+				}
+				
+				if(document.getElementById("sortBaby").checked == true){
+					if(babyVal == "yes"){
+						addMarker = "yes";
+					}
+				}
+				
+				if(document.getElementById("sortDisabled").checked == true){
+					if(disabledVal == "yes"){
+						addMarker = "yes";
+					}
+				}
+				
+				if(addMarker == "yes"){
+					markers[i] = new google.maps.Marker({
+						position: latLng,
+						icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+						map: map
+					});
+				}
+				
+            
+            //displayOverlayImage2(img);
+                
+            (function(marker,i){
+                // infowindow content
+                var contentString = '<div id="iw-container">' + '<div class="iw-title">'+ name + '</div>' + '<div class="iw-content">' + 
+                '<div class="iw-subTitle">'+ info + '<img src='+ img +'>' + '<br><a href="'+ directions +'" target="_blank">Open in Google Maps</a>' + '</div>' + '</div>' + '</div>';
+
+                google.maps.event.addListener(marker, 'click', function(){ 
+                    calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlng, marker.position);
+                    infowindow.close();
+                    // Updates the content of the infowindow before opening it
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, marker);
+		    destLat = this.position.lat();
+                    destLng = this.position.lng();
+                }); 
+            }(markers[i],i));
+        }
+    });
+    
 }
 
 function on() {
