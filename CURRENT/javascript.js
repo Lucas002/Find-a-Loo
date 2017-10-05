@@ -42,6 +42,7 @@ var marker = null;
 var markers = [];
 var markerz = null;
 var circle = null;
+var selectedMarker = null;
 var updatedLat;
 var updatedLng;
 var destLat;
@@ -72,7 +73,6 @@ function onSuccess(position) {
     
     //Google Maps
     myLatlng = new google.maps.LatLng(lat,lng);
-    
     
     mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -105,8 +105,6 @@ function onSuccess(position) {
                 icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
                 map: map
             });
-            
-            //displayOverlayImage2(img);
                 
             (function(marker,i){
                 // infowindow content
@@ -119,16 +117,20 @@ function onSuccess(position) {
                     // Updates the content of the infowindow before opening it
                     infowindow.setContent(contentString);
                     infowindow.open(map, marker);
-		    destLat = this.position.lat();
+                    destLat = this.position.lat();
                     destLng = this.position.lng();
+
+                    // Highlights selected toilet icon from black to yellow
+                    if (selectedMarker !== null){
+                      selectedMarker.setIcon("https://image.ibb.co/iR3Vzv/toilet_map.png")
+                    }
+                    marker.setIcon("https://image.ibb.co/kjpwPQ/toilet2_map.png");
+                    selectedMarker = marker;
+
                 }); 
             }(markers[i],i));
         }
     });
-}
-
-function on() {
-    document.getElementById("overlay").style.display = "block";
 }
 
 function resetFunction() {
@@ -138,7 +140,6 @@ function resetFunction() {
     
     //Google Maps
     myLatlng = new google.maps.LatLng(lat,lng);
-    
     
     mapOptions = {zoom: 16,center: myLatlng, zoomControl: false, mapTypeControl: false, streetViewControl: false}
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -154,8 +155,8 @@ function resetFunction() {
         title: 'Current Position',
         map: map
     });
-	
-	$.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
+    
+    $.getJSON('https://script.google.com/macros/s/AKfycbygukdW3tt8sCPcFDlkMnMuNu9bH5fpt7bKV50p2bM/exec?id=10x8hgJEz1cy5vfrr_4-Q1FkKYopa825TCQR6IcgKP30&sheet=Sheet',
     function (data) {
     var results = data.Sheet;
         for (var i = 0; i < results.length; i++) {
@@ -165,50 +166,47 @@ function resetFunction() {
             var name = results[i].name;
             var info = results[i].info;
             var img = results[i].img;
-			
-			var maleVal = results[i].male;
-			var femaleVal = results[i].female;
-			var babyVal = results[i].baby;
-			var disabledVal = results[i].disabled;
-			
-            var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
-			
-				addMarker = "no";
-				
-				if(document.getElementById("sortMale").checked == true){
-					if(maleVal == "yes"){
-						addMarker = "yes";
-					}
-				}
-				
-				if(document.getElementById("sortFemale").checked == true){
-					if(femaleVal == "yes"){
-						addMarker = "yes";
-					}
-				}
-				
-				if(document.getElementById("sortBaby").checked == true){
-					if(babyVal == "yes"){
-						addMarker = "yes";
-					}
-				}
-				
-				if(document.getElementById("sortDisabled").checked == true){
-					if(disabledVal == "yes"){
-						addMarker = "yes";
-					}
-				}
-				
-				if(addMarker == "yes"){
-					markers[i] = new google.maps.Marker({
-						position: latLng,
-						icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
-						map: map
-					});
-				}
-				
             
-            //displayOverlayImage2(img);
+            var maleVal = results[i].male;
+            var femaleVal = results[i].female;
+            var babyVal = results[i].baby;
+            var disabledVal = results[i].disabled;
+            
+            var directions = 'https://www.google.com/maps/dir/?api=1&origin='+myLatlng+'&destination='+latLng+'&travelmode=walking';
+            
+                addMarker = "no";
+                
+                if(document.getElementById("sortMale").checked == true){
+                    if(maleVal == "yes"){
+                        addMarker = "yes";
+                    }
+                }
+                
+                if(document.getElementById("sortFemale").checked == true){
+                    if(femaleVal == "yes"){
+                        addMarker = "yes";
+                    }
+                }
+                
+                if(document.getElementById("sortBaby").checked == true){
+                    if(babyVal == "yes"){
+                        addMarker = "yes";
+                    }
+                }
+                
+                if(document.getElementById("sortDisabled").checked == true){
+                    if(disabledVal == "yes"){
+                        addMarker = "yes";
+                    }
+                }
+                
+                if(addMarker == "yes"){
+                    markers[i] = new google.maps.Marker({
+                        position: latLng,
+                        icon: 'https://image.ibb.co/iR3Vzv/toilet_map.png',
+                        map: map
+                    });
+                }
                 
             (function(marker,i){
                 // infowindow content
@@ -221,21 +219,20 @@ function resetFunction() {
                     // Updates the content of the infowindow before opening it
                     infowindow.setContent(contentString);
                     infowindow.open(map, marker);
-		    destLat = this.position.lat();
+                    destLat = this.position.lat();
                     destLng = this.position.lng();
+
+                    // Changes selected toilet icon from black to yellow
+                    if (selectedMarker !== null){
+                      selectedMarker.setIcon("https://image.ibb.co/iR3Vzv/toilet_map.png")
+                    }
+                    marker.setIcon("https://image.ibb.co/kjpwPQ/toilet2_map.png");
+                    selectedMarker = marker;
                 }); 
             }(markers[i],i));
         }
     });
     
-}
-
-function on() {
-    document.getElementById("overlay").style.display = "block";
-}
-
-function off() {
-    document.getElementById("overlay").style.display = "none";
 }
 
 // takes the two direction handlers and to and from coords to draw to map
@@ -334,13 +331,13 @@ var checkbox = document.querySelector('input[type="checkbox"]');
 checkbox.addEventListener('change', function () {
    if (checkbox.checked) {
        for(i=0; i<markers.length; i++){
-           markers[i].setMap(null);
-	   destMarker();
+            markers[i].setMap(null);
+            destMarker();
        }
        infowindow.open(map, markerz);
        google.maps.event.addListener(markerz, 'click', function(){ 
             infowindow.close();
-            infowindow.open(map, markerz);
+            //infowindow.open(map, markerz);
        });
    } else {
        for(i=0; i<markers.length; i++){
@@ -360,49 +357,49 @@ var script_url = "https://script.google.com/macros/s/AKfycbxmxWhOqjwU8Vwpqu6jWC3
   
 // Make an AJAX call to Google Script
 function insert_value() {
-	
-	var male;
-	var female;
-	var baby;
-	var disabled;
-	
-	var longitude=	updatedLng;
-	var latitude= updatedLat;
-	var name= document.getElementById("toiletName").value;
-	var info= document.getElementById("toiletInfo").value;
-	
-	// male checkbox
-	if(document.getElementById("male").checked == true){
-		male = "yes";	
-	}
-	else {
-		male = "no";
-	}
-	
-	// female checkbox
-	if(document.getElementById("female").checked == true){
-		female = "yes";
-	}
-	else {
-		female = "no";
-	}
-	
-	// baby facility checkbox
-	if(document.getElementById("baby").checked == true){
-		baby = "yes";	
-	}
-	else {
-		baby = "no";
-	}
-	
-	// disability access checkbox
-	if(document.getElementById("disabled").checked == true){
-		disabled = "yes";
-	}
-	else {
-		disabled = "no";
-	}
-	
+    
+    var male;
+    var female;
+    var baby;
+    var disabled;
+    
+    var longitude=  updatedLng;
+    var latitude= updatedLat;
+    var name= document.getElementById("toiletName").value;
+    var info= document.getElementById("toiletInfo").value;
+    
+    // male checkbox
+    if(document.getElementById("male").checked == true){
+        male = "yes";   
+    }
+    else {
+        male = "no";
+    }
+    
+    // female checkbox
+    if(document.getElementById("female").checked == true){
+        female = "yes";
+    }
+    else {
+        female = "no";
+    }
+    
+    // baby facility checkbox
+    if(document.getElementById("baby").checked == true){
+        baby = "yes";   
+    }
+    else {
+        baby = "no";
+    }
+    
+    // disability access checkbox
+    if(document.getElementById("disabled").checked == true){
+        disabled = "yes";
+    }
+    else {
+        disabled = "no";
+    }
+    
     var url = script_url+"?callback=ctrlq&name="+name+"&longitude="+longitude+"&info="+info+"&female="+female+"&male="+male+"&baby="+baby+"&disabled="+disabled+"&latitude="+latitude+"&action=insert";
   
     var request = jQuery.ajax({
@@ -410,15 +407,79 @@ function insert_value() {
       url: url ,
       method: "GET",
       dataType: "jsonp"
-    });	
+    }); 
   }
 
    function ctrlq(e) {
-	alert('success');
+    alert('success');
   }
 
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
-    StatusBar.styleLightContent();
-}
+// <!-- FIREBASE  SIGN IN SCRIPT -->
+var config = {
+    apiKey: "AIzaSyCLGlR2YP_WpZ7AmGiQV3yHiWmA0LPCBLA",
+    authDomain: "findalooapp.firebaseapp.com",
+    databaseURL: "https://findalooapp.firebaseio.com",
+    projectId: "findalooapp",
+    storageBucket: "findalooapp.appspot.com",
+    messagingSenderId: "891714299619"
+  };
+  firebase.initializeApp(config);
 
+ // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: 'index.html',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+
+initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            // var emailVerified = user.emailVerified;
+            // var photoURL = user.photoURL;
+            // var uid = user.uid;
+            // var phoneNumber = user.phoneNumber;
+            // var providerData = user.providerData;
+            user.getIdToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = ' is Logged In';
+              document.getElementById('sign-out').addEventListener('click', function() {
+              firebase.auth().signOut();
+            });
+              document.getElementById('account-details').textContent = JSON.stringify({
+                DisplayName: displayName,
+                Email: email,
+                // emailVerified: emailVerified,
+                // phoneNumber: phoneNumber,
+                // photoURL: photoURL,
+                // uid: uid,
+                // accessToken: accessToken,
+                // providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
