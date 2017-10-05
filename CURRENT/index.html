@@ -78,7 +78,7 @@
 
 				<div id="id02" class="modal">
 				  
-				  <form class="modal-content animate" action="/action_page.php">
+				  <form class="modal-content animate">
 					<div class="imgcontainer">
 					  <span onclick="document.getElementById('id02').style.display='none'" class="cross2" title="Close Modal">&times;</span>
 					</div>
@@ -86,17 +86,14 @@
 					<div class="container">
 
 						<h2>Filter</h2>
-						<input type="checkbox" name="det" value="male" checked="checked">Male<br>
-						<input type="checkbox" name="det" value="female" checked="checked">Female<br>		
-						<input type="checkbox" name="det" value="changing" checked="checked">Changing Area<br>
-						<input type="checkbox" name="det" value="showers" checked="checked">Showers<br>						
-						<input type="checkbox" name="det" value="disabled" checked="checked">Disabled Access<br>
-						<input type="checkbox" name="det" value="water" checked="checked">Drinking Water<br>
-						<input type="checkbox" name="det" value="disposal" checked="checked">Sanitary Disposal<br>						
+						<input type="checkbox" name="sortMale" id ="sortMale" value="male" checked="checked">Male<br>
+						<input type="checkbox" name="sortFemale" id="sortFemale" value="female" checked="checked">Female<br>		
+						<input type="checkbox" name="sortBaby" id="sortBaby" value="baby" checked="checked">Baby Facility<br>				
+						<input type="checkbox" name="sortDisabled" id="sortDisabled" value="disabled" checked="checked">Disabled Access<br>					
 						<br>
 						
 						<div class="wrapper">
-						<input type="submit" class="submitBtn" value="Submit">
+						<input type="button" class="submitBtn" onclick ="resetFunction()" value="Sort Toilets">
 						</div>
 					</div>
 				  </form>
