@@ -39,7 +39,7 @@
 	<preference name="SplashScreen" value="screen"/>
 	
     <feature name="StatusBar">
-         <param name="ios-package" value="CDVStatusBar" onload="true" />
+         <param name="ios-package" value="CDVStatusBar" onload="false" />
     </feature>
 
     <preference name="orientation" value="portrait" />
