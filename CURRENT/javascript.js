@@ -425,6 +425,11 @@ var config = {
   };
   firebase.initializeApp(config);
 
+function hide(){
+    document.getElementById('id04').style.display='none';
+    document.getElementById('sign-out').style.display='none'
+}
+
  // FirebaseUI config.
       var uiConfig = {
         signInSuccessUrl: 'index.html',
@@ -457,8 +462,10 @@ initApp = function() {
             user.getIdToken().then(function(accessToken) {
               document.getElementById('sign-in-status').textContent = ' is Logged In';
               document.getElementById('sign-out').addEventListener('click', function() {
-              firebase.auth().signOut();
+                firebase.auth().signOut();
             });
+              document.getElementById("sign-out").style.display = "block";
+              document.getElementById("signedOut").style.display = "none";
               document.getElementById('account-details').textContent = JSON.stringify({
                 DisplayName: displayName,
                 Email: email,
@@ -474,6 +481,8 @@ initApp = function() {
             // User is signed out.
             document.getElementById('sign-in-status').textContent = 'Signed out';
             document.getElementById('account-details').textContent = 'null';
+            document.getElementById("signOutBtn").style.display = "none";
+            document.getElementById("signedOut").style.display = "block";
           }
         }, function(error) {
           console.log(error);
