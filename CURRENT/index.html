@@ -98,7 +98,7 @@
 						<br>
 						
 						<div class="wrapper">
-						<input type="button" class="submitBtn" onclick ="resetFunction()" value="Sort Toilets">
+							<input type="button" class="submitBtn" onclick ="resetFunction()" value="Sort Toilets">
 						</div>
 					</div>
 				  </form>
@@ -106,7 +106,7 @@
 			</li></a>
 		  </ul>
 			
-		  <ul style="top: 75%; position: relative;">
+		  <ul style="top: 67%; position: relative;">
 			<a href="#"><li>
 				<div onclick="document.getElementById('id03').style.display='block'" style="width:auto;">SIGN IN</div>
 
@@ -120,6 +120,29 @@
 					<div id="firebaseui-auth-container" style="margin-top: 10px"></div>
 	          		<div id="account-details"></div>
 	          		<div id="sign-in-status"></div>
+				  </form>
+				</div>
+			</li></a>
+
+			<a href="#"><li>
+				<div onclick="document.getElementById('id04').style.display='block'" style="width:auto;">SIGN OUT</div>
+
+				<div id="id04" class="modal">
+				  
+				  <form class="modal-content animate" action="/action_page.php">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id04').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+						<div class="wrapper">
+							<button type="button" onclick=hide(); id="sign-out" class="signOutBtn">Sign Out</button>
+						</div>
+
+						<div id="signedOut">
+							<h3>You are not Signed In</h3>
+						</div>
+					</div>
 				  </form>
 				</div>
 			</li></a>
