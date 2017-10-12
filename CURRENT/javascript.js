@@ -3,7 +3,7 @@ var modal = document.getElementById('id01');
 var modal = document.getElementById('id02');
 var modal = document.getElementById('id03');
 var modal = document.getElementById('id04');
-
+var modal = document.getElementById('id05');
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
@@ -427,7 +427,12 @@ var config = {
 
 function hide(){
     document.getElementById('id04').style.display='none';
-    document.getElementById('sign-out').style.display='none'
+    document.getElementById('sign-out').style.display='none';
+    document.getElementById('add-hide').style.display='none';
+}
+
+function alert(){
+    window.alert("You are signed out");
 }
 
  // FirebaseUI config.
@@ -454,18 +459,20 @@ initApp = function() {
             // User is signed in.
             var displayName = user.displayName;
             var email = user.email;
-            // var emailVerified = user.emailVerified;
-            // var photoURL = user.photoURL;
-            // var uid = user.uid;
-            // var phoneNumber = user.phoneNumber;
-            // var providerData = user.providerData;
+
+
             user.getIdToken().then(function(accessToken) {
               document.getElementById('sign-in-status').textContent = ' is Logged In';
+
+              // Sign Out button
               document.getElementById('sign-out').addEventListener('click', function() {
-                firebase.auth().signOut();
-            });
+                firebase.auth().signOut();});
+
+              document.getElementById("add-hide").style.display = "block";
               document.getElementById("sign-out").style.display = "block";
               document.getElementById("signedOut").style.display = "none";
+              document.getElementById("signouthide").style.display = "block";
+              document.getElementById("signinhide").style.display = "none";
               document.getElementById('account-details').textContent = JSON.stringify({
                 DisplayName: displayName,
                 Email: email,
@@ -479,10 +486,11 @@ initApp = function() {
             });
           } else {
             // User is signed out.
-            document.getElementById('sign-in-status').textContent = 'Signed out';
-            document.getElementById('account-details').textContent = 'null';
+            // document.getElementById('signedOut').textContent = 'Signed out';
+            // document.getElementById('account-details').textContent = 'null';
             document.getElementById("signOutBtn").style.display = "none";
-            document.getElementById("signedOut").style.display = "block";
+            // document.getElementById("signedOut").style.display = "block";
+
           }
         }, function(error) {
           console.log(error);
@@ -492,3 +500,4 @@ initApp = function() {
       window.addEventListener('load', function() {
         initApp()
       });
+

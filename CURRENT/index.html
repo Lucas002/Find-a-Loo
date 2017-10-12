@@ -41,7 +41,7 @@
 
 		<div class="menu">
 		  <ul>
-			<a href="#"><li>
+			<a id="add-hide" href="#"><li>
 				<div onclick="document.getElementById('id01').style.display='block'" style="width:auto;">ADD TOILETS</div>
 
 				<div id="id01" class="modal">
@@ -104,10 +104,40 @@
 				  </form>
 				</div>
 			</li></a>
+
+			<!-- UPLOAD FUNCTION -->
+			<a href="#"><li>
+			<div onclick="document.getElementById('id05').style.display='block'" style="width:auto;">UPLOAD IMAGE</div>
+
+				<div id="id05" class="modal">
+				  
+				  <form class="modal-content animate">
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('id05').style.display='none'" class="cross2" title="Close Modal">&times;</span>
+					</div>
+
+					<div class="container">
+
+						<form action="findalooapp.appspot.com" method="POST" enctype="multipart/form-data">
+						Upload File: 
+						<input type="file" name="file"><br>
+						<!-- <input type="submit" name="submit" value="Submit">  -->
+						<br>					
+						<br>
+						
+						<div class="wrapper">
+							<input type="submit" name="submit" class="submitBtn" value="Upload">
+						</div>
+						</form>
+					</div>
+				  </form>
+				</div>
+			</li></a>
+
 		  </ul>
 			
 		  <ul style="top: 67%; position: relative;">
-			<a href="#"><li>
+			<a id="signinhide" href="#"><li>
 				<div onclick="document.getElementById('id03').style.display='block'" style="width:auto;">SIGN IN</div>
 
 				<div id="id03" class="modal">
@@ -124,7 +154,7 @@
 				</div>
 			</li></a>
 
-			<a href="#"><li>
+			<a  id="signouthide" href="#"><li>
 				<div onclick="document.getElementById('id04').style.display='block'" style="width:auto;">SIGN OUT</div>
 
 				<div id="id04" class="modal">
@@ -136,12 +166,10 @@
 
 					<div class="container">
 						<div class="wrapper">
-							<button type="button" onclick=hide(); id="sign-out" class="signOutBtn">Sign Out</button>
+							<button type="button" onclick="hide();showLocation()" id="sign-out" class="signOutBtn">Sign Out</button>
 						</div>
 
-						<div id="signedOut">
-							<h3>You are not Signed In</h3>
-						</div>
+						<div id="signedOut"></div>
 					</div>
 				  </form>
 				</div>
@@ -156,3 +184,5 @@
 		
 	</body>
 </html>
+
+
