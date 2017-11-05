@@ -10,7 +10,7 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
-
+// credit https://codepen.io/g13nn/pen/eHGEF?editors=0010#0
 $( document ).ready(function() {
     $( ".cross" ).hide();
     $( ".menu" ).hide();
